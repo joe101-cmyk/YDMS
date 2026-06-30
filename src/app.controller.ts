@@ -1,5 +1,7 @@
-import { Controller, Get, HttpCode } from '@nestjs/common';
+import { Controller, Get, HttpCode, Param, Post, Query, Req, Response } from '@nestjs/common';
 import { AppService } from './app.service';
+import { MESSAGES } from '@nestjs/core/constants';
+import { log } from 'console';
 
 
 @Controller()
@@ -11,10 +13,15 @@ export class AppController {
     return this.appService.getHello();
   }
 
+     @Get('products')
+  createProduct() {
+    return this.appService.createProduct();
+  }
 
-@Get("create")
-@HttpCode(200)
-getcreate():string{
-  return "Create Success"
-}
+  @Get('products/:id')
+  findOne(@Param('id') id: string) {
+    return this.appService.findOne(id);
+  }
+
+
 }
