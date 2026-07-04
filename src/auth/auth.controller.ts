@@ -11,7 +11,7 @@ export class auth_contoller
 
 
     @Post("/register")
-    signup(@Body(new ValidationPipe) create_user_Dto:create_user_Dto){
-        return {status:"Success" , data:create_user_Dto}
+    async signup(@Body(new ValidationPipe) create_user_Dto:create_user_Dto){
+        return {suscess:true, data:create_user_Dto}
     }
 }
