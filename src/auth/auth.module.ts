@@ -1,14 +1,23 @@
-import { Module } from "@nestjs/common";
-import { auth_contoller } from "./auth.controller";
-import { Auth_service } from "./auth.service";
-import { UserModelName } from "../DB/models/user.model";
+import { Module } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
+import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
+import { JwtStrategy } from './strategies/jwt.strategy';
+import { UsersModule } from '../users/users.module';
+import { appConfig } from '../common/config/app.config';
 
 @Module({
-    imports:[UserModelName],
-    controllers:[auth_contoller],
-    providers:[Auth_service],
+  imports: [
+    UsersModule,
+    PassportModule,
+    JwtModule.register({
+      secret: appConfig.jwtSecret,
+      signOptions: { expiresIn: appConfig.jwtExpiresIn },
+    }),
+  ],
+  controllers: [AuthController],
+  providers: [AuthService, JwtStrategy],
+  exports: [AuthService],
 })
-
-export class auth_module {
-
-}
+export class AuthModule {}

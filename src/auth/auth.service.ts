@@ -1,27 +1,35 @@
-import { Injectable } from "@nestjs/common";
-import { User, UserModelName } from "../DB/models/user.model";
-import { HydratedDocument, Model } from "mongoose";
-import {create_user_Dto} from "../DTO/dto"
-import { InjectModel } from "@nestjs/mongoose";
-import { hashPassword } from "../security/hash";
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
+import { UsersService } from '../users/users.service';
+import { CreateUserDto } from '../users/dto/create-user.dto';
+import { LoginUserDto } from '../users/dto/login-user.dto';
+
 @Injectable()
-export class Auth_service{
-    constructor(@InjectModel(User.name) private readonly UserModelName:Model<HydratedDocument<User>>, ){}
-    async signup(create_user_Dto:create_user_Dto){
-        const existingUser = await this.UserModelName.findOne({ email: create_user_Dto.email });
-        if (existingUser) {
-            throw new Error('Email already exists');
-        }
-        const newUser = new this.UserModelName({
-            name: create_user_Dto.username,
-            email: create_user_Dto.email,
-            password: create_user_Dto.password,
-            provider: create_user_Dto.provider || 'system',
-            role: create_user_Dto.role,
-        });
-        await newUser.save();
-        return newUser;
-    } 
+export class AuthService {
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly jwtService: JwtService,
+  ) {}
 
+  async register(createUserDto: CreateUserDto) {
+    const user = await this.usersService.create(createUserDto);
+    const token = this.jwtService.sign({ sub: user.id, email: user.email, role: user.role });
+    return { user, token };
+  }
 
+  async login(loginUserDto: LoginUserDto) {
+    const user = await this.usersService.findByEmail(loginUserDto.email);
+    if (!user) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    const isPasswordValid = await bcrypt.compare(loginUserDto.password, user.password);
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    const token = this.jwtService.sign({ sub: user.id, email: user.email, role: user.role });
+    return { user: { id: user.id, email: user.email, name: user.name, role: user.role }, token };
+  }
 }

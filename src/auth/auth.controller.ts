@@ -1,17 +1,23 @@
-import { Body, Controller, Get, Param, Post, ValidationPipe } from "@nestjs/common";
-import { create_user_Dto } from "../DTO/dto";
+import { Body, Controller, Post } from '@nestjs/common';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AuthService } from './auth.service';
+import { CreateUserDto } from '../users/dto/create-user.dto';
+import { LoginUserDto } from '../users/dto/login-user.dto';
 
-@Controller("auth")
-export class auth_contoller
-{
-    @Get("/:id")
-    findone(@Param ('id') id:number){
-        return {userId:id,type :typeof id}
-    }
+@ApiTags('Auth')
+@Controller('auth')
+export class AuthController {
+  constructor(private readonly authService: AuthService) {}
 
+  @Post('register')
+  @ApiOperation({ summary: 'Register a new user' })
+  register(@Body() createUserDto: CreateUserDto) {
+    return this.authService.register(createUserDto);
+  }
 
-    @Post("/register")
-    async signup(@Body(new ValidationPipe) create_user_Dto:create_user_Dto){
-        return {suscess:true, data:create_user_Dto}
-    }
+  @Post('login')
+  @ApiOperation({ summary: 'Login a user' })
+  login(@Body() loginUserDto: LoginUserDto) {
+    return this.authService.login(loginUserDto);
+  }
 }
