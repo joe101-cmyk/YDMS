@@ -13,7 +13,7 @@ import { appConfig } from '../common/config/app.config';
     PassportModule,
     JwtModule.register({
       secret: appConfig.jwtSecret,
-      signOptions: { expiresIn: appConfig.jwtExpiresIn },
+      signOptions: { expiresIn: appConfig.jwtExpiresIn as any },
     }),
   ],
   controllers: [AuthController],

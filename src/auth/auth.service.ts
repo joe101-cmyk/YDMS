@@ -14,7 +14,7 @@ export class AuthService {
 
   async register(createUserDto: CreateUserDto) {
     const user = await this.usersService.create(createUserDto);
-    const token = this.jwtService.sign({ sub: user.id, email: user.email, role: user.role });
+    const token = this.jwtService.sign({ sub: (user as any)._id.toString(), email: user.email, role: user.role });
     return { user, token };
   }
 

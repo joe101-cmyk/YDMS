@@ -5,6 +5,14 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { CategoryModule } from './category/category.module';
+import { BrandModule } from './brand/brand.module';
+import { ProductModule } from './product/product.module';
+import { ReviewModule } from './review/review.module';
+import { CartModule } from './cart/cart.module';
+import { CouponModule } from './coupon/coupon.module';
+import { OrderModule } from './order/order.module';
+import { UploadsModule } from './uploads/uploads.module';
 import { appConfig } from './common/config/app.config';
 import { MailModule } from './mail/mail.module';
 
@@ -20,6 +28,14 @@ import { MailModule } from './mail/mail.module';
     }),
     AuthModule,
     UsersModule,
+    CategoryModule,
+    BrandModule,
+    ProductModule,
+    ReviewModule,
+    CartModule,
+    CouponModule,
+    OrderModule,
+    UploadsModule,
     MailModule,
   ],
   controllers: [AppController],

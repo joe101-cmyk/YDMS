@@ -60,7 +60,7 @@ ProductSchema.virtual('id').get(function (this: ProductDocument) {
 });
 ProductSchema.index({ title: 'text', description: 'text' });
 
-ProductSchema.pre('save', function (next) {
+ProductSchema.pre('save', function (next: (err?: Error) => void) {
   this.finalPrice = this.discount > 0 ? this.price - (this.price * this.discount) / 100 : this.price;
   next();
 });

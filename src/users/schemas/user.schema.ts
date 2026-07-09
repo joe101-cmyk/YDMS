@@ -22,7 +22,6 @@ export class User {
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
-UserSchema.index({ email: 1 }, { unique: true });
 UserSchema.virtual('id').get(function (this: UserDocument) {
   return this._id.toString();
 });
