@@ -9,6 +9,10 @@ import { Observable, tap } from 'rxjs';
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    if ((context.getType() as string) === 'graphql') {
+      return next.handle();
+    }
+
     const req = context.switchToHttp().getRequest();
     const now = Date.now();
     return next.handle().pipe(

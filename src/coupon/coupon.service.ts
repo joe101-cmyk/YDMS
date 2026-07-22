@@ -17,6 +17,10 @@ export class CouponService {
     return created.save();
   }
 
+  async findAll(): Promise<Coupon[]> {
+    return this.couponModel.find().exec();
+  }
+
   async validate(code: string): Promise<Coupon> {
     const coupon = await this.couponModel.findOne({ code: code.toUpperCase() }).exec();
     if (!coupon || coupon.expires < new Date()) {

@@ -1,4 +1,6 @@
 import { Module } from '@nestjs/common';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
@@ -15,6 +17,7 @@ import { OrderModule } from './order/order.module';
 import { UploadsModule } from './uploads/uploads.module';
 import { appConfig } from './common/config/app.config';
 import { MailModule } from './mail/mail.module';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -25,6 +28,12 @@ import { MailModule } from './mail/mail.module';
       useFactory: async (configService: ConfigService) => ({
         uri: configService.get<string>('DB_URI') || appConfig.mongodbUri,
       }),
+    }),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver:ApolloDriver,
+      autoSchemaFile:join(process.cwd(),"src/schema.gql"),
+      sortSchema:true,
+      context:({req})=>({req})
     }),
     AuthModule,
     UsersModule,

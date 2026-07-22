@@ -1,0 +1,81 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Coupon {
+  amount: Float!
+  code: String!
+  createdBy: String!
+  expires: DateTime!
+  id: ID!
+  isPercentage: Boolean!
+}
+
+input CreateCouponInput {
+  amount: Float!
+  code: String!
+  createdBy: String
+  expires: String!
+  isPercentage: Boolean
+}
+
+input CreateProductInput {
+  brand: ID!
+  category: ID!
+  createdBy: ID
+  description: String
+  discount: Float
+  images: [String!]
+  price: Float!
+  stock: Int
+  title: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Mutation {
+  createCoupon(input: CreateCouponInput!): Coupon!
+  createProduct(input: CreateProductInput!): Product!
+  deleteProduct(id: ID!): Boolean!
+  updateProduct(id: ID!, input: UpdateProductInput!): Product!
+}
+
+type Product {
+  brand: ID!
+  category: ID!
+  createdBy: ID!
+  description: String!
+  discount: Float!
+  finalPrice: Float!
+  id: ID!
+  images: [String!]!
+  isDeleted: Boolean!
+  price: Float!
+  ratingsAverage: Float!
+  ratingsQuantity: Int!
+  slug: String!
+  sold: Int!
+  stock: Int!
+  title: String!
+}
+
+type Query {
+  findAllCoupons: [Coupon!]!
+  findAllProducts: [Product!]!
+  findProductById(id: ID!): Product!
+}
+
+input UpdateProductInput {
+  brand: ID
+  category: ID
+  createdBy: ID
+  description: String
+  discount: Float
+  images: [String!]
+  price: Float
+  stock: Int
+  title: String
+}
