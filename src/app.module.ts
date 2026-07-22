@@ -17,6 +17,7 @@ import { OrderModule } from './order/order.module';
 import { UploadsModule } from './uploads/uploads.module';
 import { appConfig } from './common/config/app.config';
 import { MailModule } from './mail/mail.module';
+import { SocketModule } from './socket/socket.module';
 import { join } from 'path';
 
 @Module({
@@ -46,6 +47,7 @@ import { join } from 'path';
     OrderModule,
     UploadsModule,
     MailModule,
+    SocketModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -18,4 +18,4 @@ This directory documents the current NestJS/MongoDB e-commerce API. The applicat
 - Swagger UI: `http://localhost:5000/docs`
 - GraphQL: `http://localhost:5000/graphql`
 
-The port defaults to `5000`; set `PORT` to change it.
+The port defaults to `5000`; set `PORT` to change it. See [Socket](Socket.md) for the authenticated Socket.IO architecture and event reference.
